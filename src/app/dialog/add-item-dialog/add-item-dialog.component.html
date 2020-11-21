@@ -1,0 +1,24 @@
+<h4 mat-dialog-title>
+  Add Item
+</h4>
+
+<mat-dialog-content class="mb-3">
+  <div class="main-content">
+    <button class="btn btn-sm btn-primary m-1 " [disabled]="res.wood<5" (click)="pay({wood: 5})"
+      [mat-dialog-close]="item1">
+      add 1 (5 wood)
+    </button>
+    <button class="btn btn-sm btn-success m-1 " [disabled]="res.flex<5" (click)="pay({flex: 5})"
+      [mat-dialog-close]="item2">
+      add 2 (5 flex)
+    </button>
+    <button class="btn btn-sm btn-danger m-1 " [disabled]="res.wood<1 || res.flex<2" (click)="pay({wood: 1, flex: 2})"
+      [mat-dialog-close]="item3">
+      tapis (1 wood - 2 flex)
+    </button>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button class="btn btn-sm " [mat-dialog-close]="'eliminazione'">Elimina</button>
+  <button class="btn btn-sm " (click)="onCloseClick()">Annulla</button>
+</mat-dialog-actions>

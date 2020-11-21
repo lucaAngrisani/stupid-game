@@ -1,0 +1,16 @@
+<!--router-outlet></router-outlet-->
+
+<!--div class="row">
+    <app-primary class="col-4" [objList]="listItem[0]"></app-primary>
+    <app-secondary class="col-4" [objList]="listItem[1]"></app-secondary>
+    <app-tertiary class="col-4" [items]="listItem[2]"></app-tertiary>
+</div-->
+
+<app-griglia [ngClass]="style+(opt.rotate?'cursorRotate ':null)" [res]="res" [opt]="opt"></app-griglia>
+
+<div class="footer row m-0">
+    <button class="btn btn-warning col-auto m-3" (click)="opt.rotate = !opt.rotate">ruota</button>
+    <p class="col-auto m-3">
+        wood: {{res.wood}} - flex: {{res.flex}}
+    </p>
+</div>

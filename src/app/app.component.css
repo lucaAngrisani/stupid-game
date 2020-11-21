@@ -1,0 +1,18 @@
+.footer {
+    background: #0070FF;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    line-height: 2;
+    text-align: center;
+    color: #042E64;
+    font-size: 30px;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-shadow: 0 1px 0 #84BAFF;
+    box-shadow: 0 0 15px #00214B;
+}
+
+.cursorRotate {
+    cursor: wait
+}

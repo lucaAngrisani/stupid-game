@@ -1,0 +1,10 @@
+<div *ngFor="let row of grid" class="sg-row">
+    <div *ngFor="let zona of row" [class]="zona.style+zona.item?.style"
+        [style]="'--angle: '+((zona.item?.direction-1)*90)+'deg'"
+        (click)="click(zona)">
+        {{zona.item?.totale != 0 ? zona.item.totale : null}}
+        <mat-progress-bar class="bottom" *ngIf="zona.item?.progress" mode="determinate"
+            [value]="zona.item?.progress && zona.item?.cap ? zona.item?.progress/zona.item?.cap*100: 0">
+        </mat-progress-bar>
+    </div>
+</div>

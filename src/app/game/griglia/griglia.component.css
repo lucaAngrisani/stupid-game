@@ -1,0 +1,45 @@
+.sg-row {
+    display: grid;
+    grid-template-columns: repeat(20, 50px);
+    grid-auto-rows: auto;
+}
+
+.def {
+    border: 1px solid black;
+    height: 50px;
+    width: 50px;
+    background-color: cyan;
+}
+
+.item1 {
+    background-color: #b5651d;
+    background-size: contain;
+    background-image: url("/assets/spider.gif");
+}
+
+.item2 {
+    background-color: #FF6384;
+}
+
+.item3 {
+    background-color: lightgray;
+    background-size: contain;
+    background-image: url("/assets/arrow.png");
+}
+
+.tree {
+    background-color: green;
+}
+
+.flex {
+    background-color: violet;
+}
+
+.rotated {
+    transform: rotate( var(--angle));
+}
+
+.bottom {
+    margin-bottom: 0;
+    position: relative;
+}

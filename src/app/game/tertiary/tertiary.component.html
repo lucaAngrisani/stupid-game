@@ -1,0 +1,33 @@
+<div class="row m-2">
+  <button class="btn btn-warning col-auto" (click)="addTotal()">
+    Totale: {{total | number}}
+  </button>
+  <p class="col-auto">
+    {{totaleSec() | number}}/sec
+  </p>
+  <button class="btn btn-outline-warning col-auto" (click)="addNewItem()" [disabled]="controlDisabled()">
+    Aggiungi item: {{controlNextAmount() | number}} $
+  </button>
+</div>
+
+<div *ngFor="let item of items" class="row m-2">
+  <p class="col-auto">
+    {{item.count | number}}
+  </p>
+  <button class="btn btn-warning col-auto" [disabled]="item.cost>total" (click)="addItem(item)" type="button">
+    {{item.cost | number}} $
+  </button>
+  <p class="col-auto">
+    {{(item.count * item.val) | number}}/sec
+  </p>
+  <button *ngIf="item.count>10" class="btn btn-warning col-auto" [disabled]="getVal(item)>total" (click)="addVal(item)"
+    type="button">
+    Aumenta valore ({{getVal(item) | number}})
+  </button>
+</div>
+
+<div class="row">
+  <p class="col-auto">
+    <ngb-progressbar type="warning" [value]="25"></ngb-progressbar>
+  </p>
+</div>
