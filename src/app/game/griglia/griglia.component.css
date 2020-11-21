@@ -1,6 +1,6 @@
 .sg-row {
     display: grid;
-    grid-template-columns: repeat(20, 50px);
+    grid-template-columns: repeat(var(--cols), 50px);
     grid-auto-rows: auto;
 }
 

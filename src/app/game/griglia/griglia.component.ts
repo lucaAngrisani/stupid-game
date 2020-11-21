@@ -100,28 +100,7 @@ export class GrigliaComponent implements OnInit {
             zona.item.progress++;
           }
 
-          let dirY = -1;
-          let dirX = 0;
-          if (zona.item.direction || zona.item.direction == 0) {
-            switch (zona.item.direction) {
-              case 1: //UP
-                dirY = -1;
-                dirX = 0;
-                break;
-              case 2: //RIGHT
-                dirY = 0;
-                dirX = 1;
-                break;
-              case 3: //DOWN
-                dirY = 1;
-                dirX = 0;
-                break;
-              case 4: //LEFT
-                dirY = 0;
-                dirX = -1;
-                break;
-            }
-          }
+          let { dirX, dirY } = this.manageRotation(zona.item);
 
           if (zona.item.id === 3 && zona.item.totale > 0 && this.grid[rowK + dirY][key + dirX]) {
             if (zona.item.vel <= zona.item.zeroVel) {
@@ -131,7 +110,7 @@ export class GrigliaComponent implements OnInit {
             }
             zona.item.zeroVel += 100;
           }
-          
+
           else if (zona.item.id && zona.item.progress && zona.item.progress >= zona.item.cap && this.grid[rowK + dirY][key + dirX]) {
             this.grid[rowK + dirY][key + dirX].item.totale += zona.item.prod;
             zona.item.progress = 0;
@@ -139,6 +118,34 @@ export class GrigliaComponent implements OnInit {
         }
       })
     })
+  }
+
+  manageRotation(item) {
+    let dirY = -1;
+    let dirX = 0;
+
+    if (item.direction || item.direction == 0) {
+      switch (item.direction) {
+        case 1: //UP
+          dirY = -1;
+          dirX = 0;
+          break;
+        case 2: //RIGHT
+          dirY = 0;
+          dirX = 1;
+          break;
+        case 3: //DOWN
+          dirY = 1;
+          dirX = 0;
+          break;
+        case 4: //LEFT
+          dirY = 0;
+          dirX = -1;
+          break;
+      }
+    }
+
+    return { dirX, dirY };
   }
 
 }

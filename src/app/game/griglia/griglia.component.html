@@ -1,4 +1,4 @@
-<div *ngFor="let row of grid" class="sg-row">
+<div *ngFor="let row of grid" class="sg-row" [style]="'--cols: '+row.length">
     <div *ngFor="let zona of row" [class]="zona.style+zona.item?.style"
         [style]="'--angle: '+((zona.item?.direction-1)*90)+'deg'"
         (click)="click(zona)">
