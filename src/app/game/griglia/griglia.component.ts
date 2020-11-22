@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { TypeItem } from 'src/app/common/constants/typeItem.enum';
 import { AddItemDialogComponent } from 'src/app/dialog/add-item-dialog/add-item-dialog.component';
-import { idText } from 'typescript';
 
 @Component({
   selector: 'app-griglia',
@@ -10,29 +10,34 @@ import { idText } from 'typescript';
 })
 export class GrigliaComponent implements OnInit {
   grid: any[][] = [];
-  @Input() res: any = { wood: 0, flex: 0 };
+  @Input() res: any = { wood: 0, stone: 0 };
   @Input() opt: any = { rotate: false };
+
+  listItemProgress: any[] = [];
 
   constructor(
     public dialog: MatDialog,
   ) {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 17; i++) {
       let row = [];
-      for (let k = 0; k < 18; k++) {
+      for (let k = 0; k < 27; k++) {
         let rnd = Math.random();
         let style = "def rotated ";
-        let item = { totale: 0, id: null };
+        let item = { totale: 0, id: null, type: null };
+        let pos = { x: k, y: i };
 
         if (rnd > .95) {
           style += "tree ";
           item.totale = 10;
+          item.type = TypeItem.minerals;
           item.id = 4;
         } else if (rnd < .05) {
-          style += "flex ";
+          style += "stone ";
           item.totale = 10;
+          item.type = TypeItem.minerals;
           item.id = 5;
         }
-        row.push({ style, item });
+        row.push({ style, item, pos });
       }
       this.grid.push(row);
     }
@@ -45,13 +50,13 @@ export class GrigliaComponent implements OnInit {
   }
 
   click(zona) {
-    if (zona.item.id == 4 || zona.item.id == 5) {
+    if ((zona.item.type === TypeItem.minerals) && this.opt.mine) {
       if (this.mine(zona.item)) {
         zona.style = "def ";
       }
     }
     else
-      this.addItem(zona);
+      this.clickZonaItem(zona);
   }
 
   mine(item) {
@@ -59,29 +64,33 @@ export class GrigliaComponent implements OnInit {
     if (item.id == 4)
       this.res.wood++;
     else if (item.id == 5)
-      this.res.flex++;
+      this.res.stone++;
     if (item.totale < 1) {
       item.id = null;
       return true;
     }
   }
 
-  addItem(zona) {
+  clickZonaItem(zona) {
     if (this.opt.rotate && zona.item) {
       this.rotateZona(zona.item);
     } else {
-
-      let dialogRef = this.dialog.open(AddItemDialogComponent, {
-        data: { item: zona.item, res: this.res }
-      });
-      dialogRef.afterClosed().subscribe(item => {
-        if (item && item != 'eliminazione') {
-          zona.item = item;
-        } else if (item == 'eliminazione') {
-          zona.item = { style: "def ", item: { totale: 0 } };
-        }
-      })
+      this.addItem(zona);
     }
+  }
+
+  addItem(zona) {
+    let dialogRef = this.dialog.open(AddItemDialogComponent, {
+      data: { item: zona.item, res: this.res }
+    });
+    dialogRef.afterClosed().subscribe(item => {
+      if (item && item != 'eliminazione') {
+        this.listItemProgress.push(zona);
+        zona.item = item;
+      } else if (item == 'eliminazione') {
+        zona.item = { style: "def ", item: { totale: 0 } };
+      }
+    });
   }
 
   rotateZona(item) {
@@ -93,31 +102,58 @@ export class GrigliaComponent implements OnInit {
   }
 
   deciSecond() {
-    this.grid.map((row, rowK) => {
-      row.map((zona, key) => {
-        if (zona.item?.id) {
-          if (zona.item.id == 1 || zona.item.id == 2) {
-            zona.item.progress++;
-          }
+    for (let zona of this.listItemProgress) {
+      if (zona.item.id == 1 || zona.item.id == 2) {
+        zona.item.progress++;
+      }
 
-          let { dirX, dirY } = this.manageRotation(zona.item);
-
-          if (zona.item.id === 3 && zona.item.totale > 0 && this.grid[rowK + dirY][key + dirX]) {
-            if (zona.item.vel <= zona.item.zeroVel) {
-              this.grid[rowK + dirY][key + dirX].item.totale += zona.item.totale;
-              zona.item.totale = 0;
-              zona.item.zeroVel = 0;
-            }
-            zona.item.zeroVel += 100;
-          }
-
-          else if (zona.item.id && zona.item.progress && zona.item.progress >= zona.item.cap && this.grid[rowK + dirY][key + dirX]) {
-            this.grid[rowK + dirY][key + dirX].item.totale += zona.item.prod;
-            zona.item.progress = 0;
-          }
+      let { dirX, dirY } = this.manageRotation(zona.item);
+      let zonaCtrl = this.grid[zona.pos.y + dirY][zona.pos.x + dirX];
+      if (zonaCtrl) {
+        switch (zona.item.type) {
+          case TypeItem.factory:
+            this.manageFactory(zona, zonaCtrl);
+            break;
+          case TypeItem.tapis:
+            this.manageTapis(zona, zonaCtrl);
+            break;
+          case TypeItem.extractor:
+            this.manageExtractor(zona, zonaCtrl);
+            break;
         }
-      })
-    })
+      }
+
+    }
+  }
+
+  manageFactory(zona, zonaCtrl) {
+    if (zona.item.progress && zona.item.progress >= zona.item.cap) {
+      zonaCtrl.item.totale += zona.item.prod;
+      zona.item.progress = 0;
+    }
+  }
+
+  manageTapis(zona, zonaCtrl) {
+    if (zona.item.totale > 0) {
+      if (zona.item.vel <= zona.item.zeroVel) {
+        zonaCtrl.item.totale += zona.item.totale;
+        zona.item.totale = 0;
+        zona.item.zeroVel = 0;
+      }
+      zona.item.zeroVel += 100;
+    }
+  }
+
+  manageExtractor(zona, zonaCtrl) {
+    if (zona.item.toMine > 0) {
+      if (zona.item.vel <= zona.item.zeroVel) {
+        let qnt = zona.item.prod > zona.item.toMine ? zona.item.toMine : zona.item.prod;
+        zonaCtrl.item.totale += qnt;
+        zona.item.toMine -= qnt;
+        zona.item.zeroVel = 0;
+      }
+      zona.item.zeroVel += 100;
+    }
   }
 
   manageRotation(item) {

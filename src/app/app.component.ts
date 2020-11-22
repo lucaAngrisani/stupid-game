@@ -12,8 +12,8 @@ export class AppComponent {
     milliSeconds: number = 1000; */
 
   style: string = 'sg-map ';
-  opt: any = { rotate: false };
-  res: any = { wood: 10, flex: 10 };
+  opt: any = { rotate: false, mine: false };
+  res: any = { wood: 10, stone: 10 };
 
   constructor(
     public generalService: GeneralService,
@@ -26,5 +26,14 @@ export class AppComponent {
     /*     setInterval(() => {
           this.generalService.addToTotal(this.listItem);
         }, this.milliSeconds); */
+  }
+
+  select(type: string) {
+    this.opt[type] = !this.opt[type];
+    for(let bool of Object.keys(this.opt)){
+      if(bool != type){
+        this.opt[bool] = false;
+      }
+    }
   }
 }

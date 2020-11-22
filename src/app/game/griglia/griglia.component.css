@@ -8,31 +8,38 @@
     border: 1px solid black;
     height: 50px;
     width: 50px;
-    background-color: cyan;
+    background-size: contain;
+    background-image: url("/assets/ground1.gif");
 }
 
 .item1 {
-    background-color: #b5651d;
     background-size: contain;
-    background-image: url("/assets/spider.gif");
+    background-image: url("/assets/item1.gif");
 }
 
 .item2 {
-    background-color: #FF6384;
+    background-size: contain;
+    background-image: url("/assets/factory1.gif");
 }
 
 .item3 {
-    background-color: lightgray;
     background-size: contain;
     background-image: url("/assets/arrow.png");
 }
 
-.tree {
-    background-color: green;
+.extractor {
+    background-size: contain;
+    background-image: url("/assets/extractor.gif");
 }
 
-.flex {
-    background-color: violet;
+.tree {
+    background-size: contain;
+    background-image: url("/assets/tree.gif");
+}
+
+.stone {
+    background-size: contain;
+    background-image: url("/assets/stone.png");
 }
 
 .rotated {
@@ -40,6 +47,7 @@
 }
 
 .bottom {
-    margin-bottom: 0;
-    position: relative;
+    position: absolute; 
+    bottom: 0; 
+    width: 100%; 
 }

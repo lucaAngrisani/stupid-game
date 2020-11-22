@@ -16,3 +16,7 @@
 .cursorRotate {
     cursor: wait
 }
+
+.cursorMine {
+    cursor: e-resize
+}

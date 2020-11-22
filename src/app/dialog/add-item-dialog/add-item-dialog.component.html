@@ -8,13 +8,17 @@
       [mat-dialog-close]="item1">
       add 1 (5 wood)
     </button>
-    <button class="btn btn-sm btn-success m-1 " [disabled]="res.flex<5" (click)="pay({flex: 5})"
+    <button class="btn btn-sm btn-success m-1 " [disabled]="res.stone<5" (click)="pay({stone: 5})"
       [mat-dialog-close]="item2">
-      add 2 (5 flex)
+      add 2 (5 stone)
     </button>
-    <button class="btn btn-sm btn-danger m-1 " [disabled]="res.wood<1 || res.flex<2" (click)="pay({wood: 1, flex: 2})"
+    <button class="btn btn-sm btn-secondary m-1 " [disabled]="res.stone<5 || res.wood<5"
+      (click)="pay({stone: 5, wood: 5})" [mat-dialog-close]="extractor">
+      add 2 (5 stone)
+    </button>
+    <button class="btn btn-sm btn-danger m-1 " [disabled]="res.wood<1 || res.stone<2" (click)="pay({wood: 1, stone: 2})"
       [mat-dialog-close]="item3">
-      tapis (1 wood - 2 flex)
+      tapis (1 wood - 2 stone)
     </button>
   </div>
 </mat-dialog-content>
